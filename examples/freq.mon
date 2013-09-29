@@ -1,0 +1,18 @@
+echo
+sh -c "echo $TIME - Start $FREQ"
+sh -c "echo Squelch On"
+sh -c "echo Squelch Off or Timeout"
+sh -c "echo $TIME - Stop $FREQ "
+10000
+empty
+
+
+
+
+30000
+raw
+/tmp/raw.sh $FREQ
+sox -t ossdsp -r 22050 -s -w  /dev/dsp -t raw /tmp/$FREQ.fifo
+kill $ONPID
+kill $STARTPID
+30000

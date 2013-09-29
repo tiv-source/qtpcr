@@ -1,0 +1,32 @@
+- Slow computer can cause "read zero on serial port". Pentium 120MHz or
+faster is recomeneded.
+
+----- Monitor Feature -----
+
+Test:
+Monitor 10 preset channels for 1 hours. Command script is "mp3.sh" and
+"freq.mon" in example directory. It records sound in mp3 format and
+save the file to disk using differrent name depending on frequency of the
+channel. If the channale becomes inactive, QtPCR waits for 50 milliseconds
+and move to the next one. 
+
+Known Problem from previous versions:
+
+- Serial port was locked up because child process had serial port
+file descriptor. This was fixed by settting close-on-exec flag on the
+file descriptor using fnctl.
+
+- Read return zero after running monitor for 30 minutes. This was fixed
+by setting terminal parameters in non-canonical mode. See Serial-Program
+ming.html in www.linuxdoc.org for detail.
+
+
+----- Power On / Off ------
+
+Test:
+Turn radio on and off.
+
+Known Problems from previous versions:
+
+- QtPCR cound not detect if the power is on or off. It blindly activated
+graphic controls

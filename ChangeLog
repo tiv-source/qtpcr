@@ -1,0 +1,141 @@
+2/17/2002
+    - Resolve Qt 3.0 compatibility isse
+    - Tested on Debian "Potato" by Adrien
+ 
+8/08/2001
+    - Tested on FreeBSD 4.3, Slackware 8.0, and Mandrake 8.0
+8/04/2001
+    - Add 12.5kHz Stepsize (suggested by Ken, G3WCS)
+8/03/2001
+    - Clean compiler waring on modectrl.cpp
+    - Add <stdlib.h> in scandialog.h ( required on Mandrake )
+    - Make it Mandrake 8.0 Compatible (./configure)
+    - Keypad lost focus to Barscope's click
+8/02/2001
+    - Tested on FreeBSD 4.3 ,  run smooth ...
+    - FreeBSD 4.3 needs (setspeed/getspeed routine)
+    - Remove ./configure only use Makefile for now
+    - FreeBSD 4.3 compatible (remove error.h, add delay in initializ )
+7/31/2001
+    - add keyPad->setFocus() in initialization QtPcr.
+
+ 
+... Vacation ...
+
+6/14/2001
+    - Jmm suggested adding optimization compilation flag -O2. Done!
+    - Jmm suggested adding alarm command after done scanning. Done!
+    - Jmm suggested adding 9kHz and 3kHz step size. Done
+    - Limit the repaint() in meter dialog to wait at least 50 millisec
+    because human eyes are not sensitive enought to detect any thing 
+    faster anyhow. This helps on system ad hoc issue.
+    - Jmm reports that meter dialog causes system ad hoc when the
+    signal level changes really fast
+    - Clean source according to -Wall warning
+    - Jmm add <sys/time.h> in pcrio.h
+6/12/2001
+    - resize Channel dialog
+    - implement key() in listviewitem to sort properly
+6/07/2001
+    - report read zero bytes too
+    - set keyboard focus to keypad window by default
+    - Terje reports problem when compile in BSD, BSDLY not
+    definded .... etc
+    - close all file descriptor on exec exept 0, 1, and 2
+    - change termio to be more compatible , also set DTR RTS hight
+    - example scripts failed to exit properly
+    - Forgot to prevent child process from getting a hold of 
+    serial port fd. If the child messes up, it also locks serial port
+------------------- Release version 1.1 ---------------------------
+6/06/2001
+    - Done working monitor channel
+6/05/2001
+    - FIX SERIOSS BUG ... pcrio killed timer when read return 0
+    - look into squelOn correction setting before monitoring
+    - lookinto signal channel monitor 
+    - deadlock fixed, wait for testing
+    - monitor has deadlock problem
+    - terminated myteriously while monitoring (record file shows zerobyte)
+      meaning the child exit really quick
+    - QtPCR now begins monitoring at correct frequency
+    - Bug found: monitor begin incorrect currentItem
+    - kill all childs after done monitoring 
+    - don't forget to kill all sucker child after stop monitoring
+    - handler exiting child process, kill defunct
+    - Solved: forgot to check if signal is on/off really quick 
+    - Problem: scan, and sig gone dead after monitoring for a while
+    - Check dependency in Makefile.in
+    - Bug fix: Scandialog, mark button was diable after load pixmap
+    - Begin add monitor dialog
+-------------------- Release version 1.0  finally ------------
+
+6/04/2001
+    - Add info box in Channel database
+    - Bug Fixed: forget to strip newline when readln from file
+    - Add pause button
+    - Add tool tips
+    - Organize source codes
+    - Scan Dialog: Take out filter , and mode edit box as
+    they are redundant with control dialog
+    - Scan Dialog: increase canvas height to 310 to prevent
+    nasty tile effect
+    - Scan Dialog: click on screen to set radio frequency
+    - Scan Dialog: add "Mark" button to set frequency marker
+    in case of loading pixmap from file.
+    - Scan Dialog: experiment with simple exponential decay
+    see which one works better
+    - the filter works well with narrow FM, but sucks at wide FM.
+    so I just gonna make it one of the options instead.
+    - Scan dialog: experiment with proportional integral filter
+    that is used to adjust signal strength coming out from pcr-1000
+    - Scan dialog: Add loop, lock, algorithm, and scale buttons
+    - Scan dialog: Clear all screen before loading new pixmap.
+6/03/2001
+    - Change canvas height to 300 
+6/02/2001
+    - Try to add 3 secon sync time before scan
+    - Take out canvas resize becaues we now have a better scan algorithm
+    - Properly resize canvas after scan finished (might needed to be
+      change in case of more sophisticat scan )
+    - Read returns zero resolved. Just closed and reopen serial port
+    - Change scanning algorithm to fixed stepsize util I can
+      resolve read returning zero bytes. Problem.
+      When occurs, bandscope goes down, signal stregn still
+      fucntioning but slow. Need to reset serial port. Close,
+      and then open again should help. Also need to stop 
+      those scanning and other activity for awhile too.
+
+    - Try to open radio serial port at different baud rate.
+      Both 9600 and 38400. Hence, you can now just exit program
+      and still be able to use it.
+    - Change scaning algorithm to Sig change driven (could hoc radio)
+    - Bug: smart_reset info failed to find absolute vale 
+    - Forgot to call setTS() in pcrproxy.cpp in constructor
+    - Change default step size (TS) to 10kHz
+    - Add Tips feature. It displays at the beginning
+      of the programs. Edit tips.h for change.
+6/01/2001
+    - Rename folder when double clicked
+    - Forgot to initilize pcrinfo.device
+------------ Begin Pre 1.0 release ----------------
+6/01/2001
+    - Major change.
+      Add Channel database
+      Add Scan function
+
+5/25/2001 
+	- Fix IF shift (untested)
+	- Added low frequency step size, as suggested by Dave, VK5DG.
+	- Put all radio feature in pcrproto.h
+	- Fix Dial bug. It turned right eventhough reached max value
+	- Fix Bandscope bug. It ignore low step size setting
+
+--------------- Begin Beta release ------------------
+5/5/2001 - Bug fixed
+
+When QtPCR failed to initialize radio (i.e. /dev/pcr1000 
+doesn't exist, unaccessible), the POWER button could not
+be re-activated to turn on the radio.
+
+5/5/2001 - Change executable file name to 'qtpcr'
+

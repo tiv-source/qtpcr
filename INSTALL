@@ -1,0 +1,28 @@
+Installation
+============
+
+1) Make sure you have Qt-Library version 2.x.x installed. If
+you don't have it yet, download it from www.trolltech.com.
+
+2) Edit 'Makefile'. Make sure following entries have correct
+path:
+
+INCPATH = -I/usr/lib/qt/include
+LIBS = -L/usr/lib/qt
+MOC = /usr/bin/moc
+
+3) Build program by executing command:
+
+# cd src
+# make
+
+4) Create symbolic link '/dev/pcr1000' to your serial port.
+For example, if your PCR-1000 is connected to COM1, you can
+execute command:
+
+# ln -s /dev/ttyS0 /dev/pcr1000
+
+5) Make sure you have read/write permission to the device above.
+
+6) Enjoy!
+

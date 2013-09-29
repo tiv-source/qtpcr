@@ -1,0 +1,103 @@
+#!/bin/sh
+
+
+## System 
+echo
+OS=$(uname)
+echo System is $OS
+QTINC=
+QTLIB=
+QTMOC=
+
+## Search
+echo Searching Qt Library, Include, and MOC ...
+
+
+if [ "UNKNOWN" != ${QTDIR:-"UNKNOWN"}  ] ; then
+
+echo Found variable QTDIR
+
+if [ -d $QTDIR/include ] ; then
+QTINC=$QTDIR/include
+fi
+
+if   [ -e $QTDIR/bin/moc  ] ; then
+QTMOC=$QTDIR/bin/moc
+elif [ -e $QTDIR/bin/moc2 ] ; then
+QTMOC=$QTDIR/bin/moc2
+fi
+
+fi
+
+if [ $OS == "Linux" ]; then
+
+for fname in $(/sbin/ldconfig -pN | grep "libqt2.so ") ; do
+if [ -e $fname ]; then QTLIB=$fname; fi
+done 
+
+for fname in $(/sbin/ldconfig -pN | grep "libqt.so ") ; do
+if [ -e $fname ]; then QTLIB=$fname; fi
+done
+
+fi
+
+## Default paths search
+QTINC_search()
+{
+if [ -e $1 ]; then QTINC=$1; fi
+}
+
+QTMOC_search()
+{
+if [ -e $1 ]; then QTMOC=$1; fi
+}
+
+QTLIB_search()
+{
+if [ -e $1 ]; then QTLIB=$1; fi
+}
+
+if [ -z $QTINC ]; then
+
+echo Searching Qt Includes default paths
+
+QTINC_search /usr/lib/qt/include      # Slackware 
+QTINC_search /usr/X11R6/include/qt2   # FreeBSD
+QTINC_search /usr/lib/qt2/include     # Mandrake
+
+fi
+
+if [ -z $QTMOC ]; then
+
+echo Searching Qt MOC default paths
+
+QTMOC_search /usr/lib/qt/bin/moc   # Slackware 
+QTMOC_search /usr/X11R6/bin/moc2   # FreeBSD
+QTMOC_search /usr/lib/qt2/bin/moc  # Mandrake
+
+fi
+
+if [ -z $QTLIB ]; then
+
+echo Search Qt Library default paths
+
+QTLIB_search /usr/lib/libqt.so         # Slackware, Mandrake
+QTLIB_search /usr/X11R6/lib/libqt2.so  # FreeBSD
+fi
+
+## Reports
+if [ -z $QTINC ]; then QTINC=UNKNOWN; fi
+if [ -z $QTMOC ]; then QTMOC=UNKNOWN; fi
+if [ -z $QTLIB ]; then QTLIB=UNKNOWN; fi
+
+echo 
+echo _____________________________________________________ 
+echo II                                
+echo II  You should edit Makefile using 
+echo II  the following information :         
+echo II                                   
+echo II  QT Inc - $QTINC              
+echo II  QT Lib - $QTLIB             
+echo II  QT MOC - $QTMOC              
+echo II                               
+echo -----------------------------------------------------    

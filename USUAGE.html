@@ -1,0 +1,99 @@
+<html>
+<body>
+<h1>FAQ</h1>
+
+<p>
+How do I ... ?
+<br><a href="#H1">1. Turn on/off radio</a>
+<br><a href="#H2">2. Set alias for channel</a>
+<br><a href="#H3">3. Enter additional information for channel</a>
+<br><a href="#H4">4. Record sound in mp3 format</a>
+<br><a href="#H5">5. Monitor preset channels</a>
+<br><a href="#H6">6. Choose preset monitor command</a>
+<br><a href="#H7">7. What are these $FREQ and $TIME in preset command</a>
+<br><a href="#H8">8. Rename folder in channel database</a>
+<br><a href="#H9">9. What do these edit boxes in Monitor dialog mean</a>
+
+<p><a name="H1">1. Turn on/off radio</a>
+<br>
+In radio control dialog, click POWER buttons. QtPCR will 
+pop up several choices.
+
+<p><a name="H2">2. Set alias for channel</a>
+<br>
+In radio control dialog, double click on area just above
+frequency display. That area will become a text box, and
+you can enter anything in that box. Hit Enterafter finishing.
+
+<p><a name="H3">3. Enter additional information for channel</a>
+<br>
+In radio control dialog, double click on area below mode 
+display (e.g AFC, AGC, NB ). The bandscope will become
+a text box. Enter any info in the box and double click
+below mode display again.
+
+<p><a name="H4">4. Record sound in mp3 format</a>
+<br>
+You need mp3 encoder. One good choice is a program called "lame".
+Once you download and compiled it, make sure you can record sound
+while not using QtPCR
+
+<p>
+After making sure "lame" runn properly, choose "mp3" preset in
+monitor dialog.
+
+<p><a name="H5">5. Monitor preset channels</a>
+<br>
+In monitor dialog, you have to add channels into monitoring list.
+This can be done by clicking "Add" buttons in the dialog, or
+click "Monitor" button in channle dialog.
+
+<p>
+One powerful feature in QtPCR is that it can execute script program
+when events happpen. In monitor dialog, you will notice edit box
+Start, On, Off, and Stop command. You can enter any command in the
+box by first click Option button. After editing all command, click
+Option again.
+
+<p>
+You can load preset command set by clicking "Load" button. As
+a tutorial session, try loading file "freq.mon" and use "echo"
+preset command. Study the command for a while , you'll see how
+it works easily
+
+<p>
+If you are new to Linux, BE CAREFUL when you edit these command. 
+List any automatic script, if you are not careful, the effect is
+unpredictable.
+
+<p><a name="H6">6. Choose preset monitor command</a>
+<br>
+In monitor dialog, load preset command file by click "Load". See
+example file "freq.mon"  Once you loaded the command sets, click
+preset combo box.
+
+<p><a name="H7">7. What are these $FREQ and $TIME</a>
+<br>
+Just like a shell has its own variable, QtPCR also has internal
+variable that you can use when exeucte shell script. These variables
+are, for example, $FREQ, $TIME, $ONPID, $OFFPID, $STARTPID, $STOPPID.
+Look in "monitor.cpp" subroutine MonitorDialog::ExecuteCmd for 
+details.
+
+<p><a name="H8">8. Rename folder name in channel database</a>
+<br>
+Double click the folder
+
+<p><a name="H9">9. What do these edit boxes in Monitor dialog mean</a>
+<br>
+"Elapse (msec)" is the maximum time QtPCR will stay in that channels
+when it is active. While in that channel, you can record sound and
+do many things. A good range is about 3000 millsecond.
+
+<br>
+"Step (msec)" is the time QtPCR will wait before moving to the next
+channel in case it is in-active. The smaller the faster and more
+efficient it becomes. A good range is about 100 millisecond.
+
+</body>
+</html>

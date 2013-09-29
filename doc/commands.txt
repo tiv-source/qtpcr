@@ -1,0 +1,110 @@
+When the radio is first turned on, the following are sent
+
+H101 ' turns the radio on
+G4? ' Maybe inquires if the DSP is installed - radio replies G400
+G105  'Sets baud rate to 38400
+G300 ' Sets updating to off, so we don't get junk from the radio during setup
+H1? ' Inquires if the radio is still there - radio responds H101
+G301 ' Sets updating to on - radio sends back info when even occurs (squelch opens, s-meter moves, or DTMF received)
+GE? ' Not known, radio replies GE02
+GD? ' Not known, radio replies GD00
+J4A80 ' Not known, radio replies G000
+LD82000 ' Not known, radio replies G000
+J8001 ' As above
+J8100 ' As above
+J8200 ' As above
+J8300 ' As above
+J4070 ' Sets the volume
+
+Most commands not followed by interrogation, are followed by CRLF = CHR$(13)+CHR$(10)
+The chains of hex codes following the command code for volume, squelch etc. are detailed in at the end of this text, they
+were captured from the IC-PCR1000 software from Icom. To turn off the radio, H100 is sent.
+
+_____________
+Basic commands:
+-------------------
+Baud rate:
+G1xx   ' Where xx=baud rate
+00=300, 01=1200, 02=4800, 03=9600, 04=19200, 05=38400
+
+Volume:
+J40vv  ' Where vv=00 (minimum) to FA (maximum)
+
+Squelch:
+J41ssJ50vs   ' Where ss=01 (minimum) to FA (maximum) - the point at which s-meter squelch comes in is J4182
+					            J50vs sets VSC (vs=01 for ON, vs=00 for OFF)
+
+Tone Squelch:
+J51tt   ' Where tt=00 (off) then 01 (67.0Hz) to 33 (254.1Hz)
+
+IF Shift:
+J43ii   ' Where ii=00 to FA
+
+Frequency change:
+K0GMMMKKKHHHmmff00
+Where G=GHz, MMM=MHz, KKK=KHz, HHH=Hz
+mm is the mode, where
+00=LSB, 01=USB, 02=AM, 03=CW, 04=??(Maybe DSP setting), 05=NFM, 06=WFM
+ff is the filter, where
+00=3kHz, 01=6kHz, 02=15kHz, 03=50kHz, 04=230kHz
+
+For example, 453.525, NFM, and 15kHz filter would be:
+K00453525000050200
+The last two zeros are probably for a DSP setting, in the standard PCR1000 they don't seem to have any effect.
+
+Automatic Gain Control (AGC):
+ON=J4501
+OFF=J4500
+
+Noise Blanker (NB):
+ON=J4601
+OFF=J4600
+
+Attenuator:
+ON=J4701
+OFF=J4700
+
+Voice Scan (VSC):
+ON=J5001
+OFF=J5000
+
+Band Scope:
+ON=ME0000114050501000ssss
+OFF=ME0000114050500000ssss
+Where ssss = step size in Hz
+More details on this command are not know, will investigate further
+
+Signal update from the radio:
+G3xx  where
+00=OFF, the program needs to inquire signal strength, DTMF tone, center, etc.)
+01=ON, radio sends signal strength, DTMF tones, etc. as needed
+02=Binary mode (update off)
+03=Binary mode (update on)
+
+When update is off, the program needs to interrogate the radio about the state of the signal at
+any one time, and this is done with the following interrogation commands:
+I0?=Squelch status
+I1?=Signal strength
+I2?=Signal centering
+I3?=DTMF tone
+
+The responses sent by the radio to these interrogations are:
+I0ss ' Squelch open, where ss=07 open, ss=04 closed
+I1ss ' Signal strength, where ss=00 (min) to FF (max) - how many steps are not known
+I2sc ' Signal centering, works with the Automatic Frequency Control (AFC) of the Icom software
+sc=00 when Signal Frequency < Display Frequency
+sc=80 when Signal Frequency = Display Frequency
+sc=FF when Signal Frequency > Display Frequency
+I3dd ' DTMF tone, dd=00 when no tone present, dd=1t when a tone is received, where t=tone (note *=E, #=F)
+
+When automatic update is turned on (G301), the radio sends a "what is going on at the moment" string, similar to
+
+I104I280I300I004I104
+
+This means "no signal (I104) signal centered (I280) no DTMF (I300) squelch closed (I004) no signal (I104)"
+When a signal breaks the squelch, first the radio sends "Squelch open (I007)", then signal strength (I1C3 for example)
+After this, it would update the data like in the following example, when status changes (spaces between responses have been
+added for clarity). However, in this live update, the final digit of each response is sent twice (i.e. I0077), but it's not sure that
+this has to do with the program used to capture the data.
+
+I007 I1C3 I1C9 I1BF I004 I1A5 I191 I17E I16D I15B I149 I134 I11B I104 G300 G000

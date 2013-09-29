@@ -1,0 +1,20 @@
+f you want gnuplot to stick around "forever", processing
+requests from the FIFO, you simply need to ensure that there
+is always some writer attached to the FIFO.  Such as with:
+     gnuplot <FIFO 3>FIFO &
+
+Now gnuplot will not see EOF on its stdin unless it either
+re-opens a different stdin or it blindly closes fd 3.
+
+----------------------------------------
+send data to fifo without end-of-file
+
+exec 3>fifo
+echo this >&3
+echo that >&3
+some other program >&3
+echo the other >&3
+exec 3>&-
+
+
+----------------------------------------

@@ -1,0 +1,77 @@
+*********
+* QtPCR *
+*********
+
+is a software running under Linux and XWindows. It controls 
+scanner radio PCR-1000 from Icom. Providing most features
+such as BandScope, SignalStrength, and Dial, QtPCR is easy
+to use and has niffy GUI.
+
+Authors
+=======
+Teepanis Chachiyo   - programmers
+
+
+Special Thanks
+==============
+PCR-1000 hackers who provide protocols and documents.
+
+jmm <jmm@cvni.net> - Bug report, complier test, suggestions
+                     optimization test, and more
+
+David Anderson
+Clifton Turner
+Judson L. Ahern
+
+Dave, VK5DG.   - Report Bug and add more stepsize
+
+
+PolyWog <polywog@ghetto.org> - creator of IcomLib who
+Javaman <javaman@ghetto.org>   inspire the use of QtLib
+
+
+Terje Elde <terje@thinksec.no> - inputs and bug reports and
+                                 possible team in the next
+                                 major project.
+
+License
+=======
+
+QtPCR is under GPL2. In a nutshell, do what you want with
+the code as long as it's not for profit, and publish your
+source code.
+
+Installation
+============
+
+1) Make sure you have Qt-Library version 2.x.x installed. If
+you don't have it yet, download it from www.trolltech.com.
+
+2) Edit 'Makefile'. Make sure following entries have correct
+path:
+
+INCPATH = -I/usr/lib/qt/include
+LIBS = -L/usr/lib/qt
+MOC = /usr/bin/moc
+
+3) Build program by executing command:
+
+# cd src
+# make
+
+4) Create symbolic link '/dev/pcr1000' to your serial port.
+For example, if your PCR-1000 is connected to COM1, you can
+execute command:
+
+# ln -s /dev/ttyS0 /dev/pcr1000
+
+5) Make sure you have read/write permission to the device above.
+
+6) Enjoy!
+
+
+Bug Reports/Features Request
+============================
+
+Feel free to send me email: teepanis@physics.purdue.edu
+
